@@ -9,9 +9,9 @@ from PIL import Image
 import torch.nn as nn
 from torch import optim
 import torchvision.utils
+from helpers import show_plot
 from datetime import datetime
 import torch.nn.functional as F
-import matplotlib.pyplot as plt
 import torchvision.datasets as dset
 from torch.autograd import Variable
 import torchvision.datasets.fakedata
@@ -21,19 +21,12 @@ from torch.utils.data import DataLoader, Dataset
 from siamesenetwork import SiameseNetwork
 from siamesenetwork import SiameseNetworkDataset
 
-def show_plot(iteration,loss):
-    plt.plot(iteration,loss)
-    plt.xlabel('iteration')
-    plt.ylabel('loss')
-    plt.savefig('loss_figure.png')
-    plt.show()
-
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f"training device: {device}")
 
 class Config():
     training_dir = "./images/train_q/"
-    train_batch_size = 128
+    train_batch_size = 32
     train_number_epochs = 5_000
 
 folder_dataset = dset.ImageFolder(root=Config.training_dir)
@@ -66,8 +59,8 @@ for epoch in tqdm(range(1, Config.train_number_epochs+1), ascii=True if sys.plat
         img0, img1 , label = data
         img0, img1 , label = img0.to(device), img1.to(device) , label.to(device)
         optimizer.zero_grad()
-        output1,output2 = net(img0,img1)
-        loss_contrastive = criterion(output1,output2,label)
+        output1,output2 = net(img0, img1)
+        loss_contrastive = criterion(output1, output2, label)
         loss_contrastive.backward()
         optimizer.step()
         if i %10 == 0 :
@@ -88,4 +81,4 @@ for epoch in tqdm(range(1, Config.train_number_epochs+1), ascii=True if sys.plat
         print()
         print(f"model checkpoint saved to models/model_state_dict_{epoch    }")
 
-show_plot(counter, loss_history)
+show_plot(counter, loss_history, save=True)
