@@ -22,7 +22,7 @@ class Config():
     else:
         testing_dir = "./images/test_q/test/"           # add linux path here before testing
         images_dir = "./images/dataset/compare_images/"
-print(f"loading image datasets... ")
+print("loading image datasets... ")
 
 test_dataset = ImagesDataset(rootdir=Config.testing_dir,
                                         transform=transforms.Compose([transforms.Resize((100,100)),
@@ -31,7 +31,7 @@ test_dataset = ImagesDataset(rootdir=Config.testing_dir,
                                         )
 
 test_dataloader = DataLoader(test_dataset, batch_size=1, shuffle=False)
-print(f"prepared test image")
+print("prepared test image")
 compare_dataset = ImagesDataset(rootdir=Config.images_dir,
                                         transform=transforms.Compose([transforms.Resize((100,100)),
                                                                       transforms.ToTensor()
@@ -39,7 +39,7 @@ compare_dataset = ImagesDataset(rootdir=Config.images_dir,
                                         )
 
 compare_dataloader = DataLoader(compare_dataset, batch_size=1, shuffle=False)
-print(f"prepared compare dataset")
+print("prepared compare dataset")
 
 dataiter_test_image = iter(test_dataloader)
 x0 = next(dataiter_test_image)
