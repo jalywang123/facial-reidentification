@@ -1,23 +1,18 @@
 import sys
 import time
 import torch
-import random
-import numpy as np
 import PIL.ImageOps
 from tqdm import tqdm
-from PIL import Image    
 import torch.nn as nn
 from torch import optim
 import torchvision.utils
-from datetime import datetime
 import torch.nn.functional as F
 import matplotlib.pyplot as plt
 import torchvision.datasets as dset
-from torch.autograd import Variable
 import torchvision.datasets.fakedata
 import torchvision.transforms as transforms
 from loss import ContrastiveLoss
-from torch.utils.data import DataLoader, Dataset
+from torch.utils.data import DataLoader
 from siamesenetwork import SiameseNetwork
 from siamesenetwork import SiameseNetworkDataset
 
