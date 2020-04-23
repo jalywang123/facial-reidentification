@@ -6,7 +6,7 @@ from torch.autograd import Variable
 from siamesenetwork import ImagesDataset
 from siamesenetwork import SiameseNetwork
 import torchvision.transforms as transforms
-from torch.utils.data import DataLoader, Dataset
+from torch.utils.data import DataLoader
 
 args = argparse.ArgumentParser()
 args.add_argument('--model')

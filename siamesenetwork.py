@@ -6,7 +6,7 @@ import numpy as np
 from PIL import Image
 from torch import nn as nn
 # from skimage import io, transform
-from torch.utils.data import DataLoader, Dataset
+from torch.utils.data import Dataset
 
 class SiameseNetworkDataset(Dataset):
     
