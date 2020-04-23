@@ -62,7 +62,7 @@ class TripletDataset(Dataset):
         # getting anchor image
         anchor = random.choice(self.imageFolderDataset.imgs)
         # we need to get one image of same class and on of a different class
-        should_get_same_class = random.randint(0,1) 
+        random.randint(0,1) 
         while True:
             
             #keep looping till the same class image is found
