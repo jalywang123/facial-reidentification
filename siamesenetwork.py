@@ -157,7 +157,7 @@ class SiameseNetwork(nn.Module):
             nn.Linear(500, 500),
             nn.ReLU(inplace=True),
 
-            nn.Linear(500, 10)) # 10-float32 bit encoding
+            nn.Linear(64, 10)) # 10-float32 bit encoding
 
     def forward_once(self, x):
         output = self.cnn1(x)
@@ -165,9 +165,10 @@ class SiameseNetwork(nn.Module):
         output = self.fc1(output)
         return output
 
-    def forward(self, input1, input2):
+    def forward(self, input1, input2, input3):
         output1 = self.forward_once(input1)
         output2 = self.forward_once(input2)
+        output3 = self.forward_once(input3)
         return output1, output2
 
 

@@ -16,22 +16,22 @@ import torchvision.datasets as dset
 from torch.autograd import Variable
 import torchvision.datasets.fakedata
 import torchvision.transforms as transforms
-from loss import ContrastiveLoss
+from loss import TripletLoss
 from torch.utils.data import DataLoader, Dataset
 from siamesenetwork import SiameseNetwork
-from siamesenetwork import SiameseNetworkDataset
+from siamesenetwork import TripletDataset
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f"training device: {device}")
 
 class Config():
     training_dir = "./images/train_q/"
-    train_batch_size = 32
-    train_number_epochs = 5_000
+    train_batch_size = 128
+    train_number_epochs = 100
 
 folder_dataset = dset.ImageFolder(root=Config.training_dir)
 
-siamese_dataset = SiameseNetworkDataset(imageFolderDataset=folder_dataset,
+siamese_dataset = TripletDataset(imageFolderDataset=folder_dataset,
                                         transform=transforms.Compose([transforms.Resize((100,100)),
                                                                       transforms.RandomHorizontalFlip(),
                                                                       transforms.RandomVerticalFlip(),
@@ -46,7 +46,7 @@ train_dataloader = DataLoader(siamese_dataset,
                         batch_size=Config.train_batch_size)
 
 net = SiameseNetwork().to(device)
-criterion = ContrastiveLoss().to(device)
+criterion = TripletLoss().to(device)
 optimizer = optim.Adam(net.parameters(), lr = 0.0005)
 
 counter = []
@@ -79,6 +79,6 @@ for epoch in tqdm(range(1, Config.train_number_epochs+1), ascii=True if sys.plat
         }
         torch.save(state_dict, f"model_state_dict_{epoch}.pt")
         print()
-        print(f"model checkpoint saved to models/model_state_dict_{epoch    }")
+        print(f"model checkpoint saved to models/model_state_dict_{epoch}")
 
 show_plot(counter, loss_history, save=True)

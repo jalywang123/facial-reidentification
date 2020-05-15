@@ -30,7 +30,7 @@ class TripletLoss(torch.nn.Module):
         super(TripletLoss, self).__init__()
         self.margin = margin
 
-    def triple_loss(a, p, n) : 
+    def forward(self, a, p, n) : 
         d = nn.PairwiseDistance(p=2)
         distance = d(a, p) - d(a, n) + self.margin 
         loss = torch.mean(torch.max(distance, torch.zeros_like(distance))) 
