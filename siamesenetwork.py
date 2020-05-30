@@ -42,7 +42,7 @@ class SiameseNetworkDataset(Dataset):
 
         img1 = img1_tuple[0]
         img1 = get_face_locations(img1)
-        
+
         img0 = img0.convert("L")
         img1 = img1.convert("L")
 
@@ -154,33 +154,26 @@ class SiameseNetwork(nn.Module):
             nn.Conv2d(1, 4, kernel_size=3),
             nn.ReLU(inplace=True),
             nn.BatchNorm2d(4),
-            
             nn.MaxPool2d(3, padding=1),
-            
             nn.ReflectionPad2d(1),
             nn.Conv2d(4, 8, kernel_size=3),
             nn.ReLU(inplace=True),
             nn.BatchNorm2d(8),
-            
             nn.MaxPool2d(3, padding=1),
-
             nn.ReflectionPad2d(1),
             nn.Conv2d(8, 8, kernel_size=3),
             nn.ReLU(inplace=True),
             nn.BatchNorm2d(8),
-            
             nn.MaxPool2d(3, padding=1),
-
         )
 
         self.fc1 = nn.Sequential(
             nn.Linear(128, 500),
             nn.ReLU(inplace=True),
-
             nn.Linear(500, 500),
             nn.ReLU(inplace=True),
-
-            nn.Linear(500, 128)) # 10-float32 bit encoding
+            nn.Linear(500, 128),
+        )  # 10-float32 bit encoding
 
     def forward_once(self, x):
         output = self.cnn1(x)

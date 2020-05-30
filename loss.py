@@ -30,7 +30,7 @@ class TripletLoss(torch.nn.Module):
     loss = max(d(a, p) - d(a, n) + margin, 0)
     """
 
-    def __init__(self, margin=0.5):
+    def __init__(self, margin=0.2):
         super(TripletLoss, self).__init__()
         self.margin = margin
 
