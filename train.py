@@ -23,8 +23,8 @@ print(f"training device: {device}")
 
 class Config:
     training_dir = "./images/train_q/"
-    train_batch_size = 16
-    train_number_epochs = 500
+    train_batch_size = 32
+    train_number_epochs = 50_000
 
 
 folder_dataset = dset.ImageFolder(root=Config.training_dir)
@@ -50,11 +50,16 @@ train_dataloader = DataLoader(
 
 net = SiameseNetwork().to(device)
 criterion = ContrastiveLoss().to(device)
-optimizer = optim.Adam(net.parameters(), lr=0.0005)
+optimizer = optim.Adam(net.parameters(), lr=0.0003)
 
 counter = []
 loss_history = []
 iteration_number = 0
+
+try:
+    import slack_callback
+except Exception as e:
+    pass
 
 for epoch in range(1, Config.train_number_epochs + 1):
     start = time.time()
@@ -68,12 +73,16 @@ for epoch in range(1, Config.train_number_epochs + 1):
         loss_contrastive = criterion(output1, output2, label)
         loss_contrastive.backward()
         optimizer.step()
-        if i % 20 == 0:
-            print(
-                "epoch: {} current loss: {} time taken: {}s".format(
-                    epoch, loss_contrastive.item(), str(time.time() - start)[:5]
-                )
-            )
+        if i % 10 == 0:
+            print("epoch: {} current loss: {} time taken: {}s".format(epoch, loss_contrastive.item(), str(time.time() - start)[:5]))
+            message = "epoch: {} current loss: {} time taken: {}s".format(
+                                        epoch, loss_contrastive.item(), str(time.time() - start)[:5]
+                                                        )
+            try:
+               slack_callback.write(message)
+            except Exception as e:
+               pass
+
             iteration_number += 10
             counter.append(iteration_number)
             loss_history.append(loss_contrastive.item())
