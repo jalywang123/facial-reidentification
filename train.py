@@ -29,7 +29,7 @@ res = args.parse_args()
 class Config:
     training_dir = "./images/train_q/"
     train_batch_size = 32
-    train_number_epochs = res.epoch or 500
+    train_number_epochs = int(res.epoch) or 500
 
 
 folder_dataset = dset.ImageFolder(root=Config.training_dir)
@@ -55,7 +55,7 @@ train_dataloader = DataLoader(
 
 net = SiameseNetwork().to(device)
 criterion = ContrastiveLoss().to(device)
-optimizer = optim.Adam(net.parameters(), lr=res.lr or 0.0003)
+optimizer = optim.Adam(net.parameters(), lr=float(res.lr) or 0.0003)
 
 counter = []
 loss_history = []
