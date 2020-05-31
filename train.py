@@ -63,9 +63,7 @@ except Exception as e:
 
 for epoch in range(1, Config.train_number_epochs + 1):
     start = time.time()
-    for i, data in enumerate(
-        train_dataloader, 0
-    ):
+    for i, data in enumerate(train_dataloader, 0):
         img0, img1, label = data
         img0, img1, label = img0.to(device), img1.to(device), label.to(device)
         optimizer.zero_grad()
@@ -74,14 +72,18 @@ for epoch in range(1, Config.train_number_epochs + 1):
         loss_contrastive.backward()
         optimizer.step()
         if i % 10 == 0:
-            print("epoch: {} current loss: {} time taken: {}s".format(epoch, loss_contrastive.item(), str(time.time() - start)[:5]))
+            print(
+                "epoch: {} current loss: {} time taken: {}s".format(
+                    epoch, loss_contrastive.item(), str(time.time() - start)[:5]
+                )
+            )
             message = "epoch: {} current loss: {} time taken: {}s".format(
-                                        epoch, loss_contrastive.item(), str(time.time() - start)[:5]
-                                                        )
+                epoch, loss_contrastive.item(), str(time.time() - start)[:5]
+            )
             try:
-               slack_callback.write(message)
+                slack_callback.write(message)
             except Exception as e:
-               pass
+                pass
 
             iteration_number += 10
             counter.append(iteration_number)
