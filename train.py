@@ -1,4 +1,5 @@
 import sys
+import argparse
 import time
 import torch
 import PIL.ImageOps
@@ -20,11 +21,15 @@ from siamesenetwork import SiameseNetworkDataset
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"training device: {device}")
 
+args = argparse.ArgumentParser()
+args.add_argument("--epoch")
+args.add_argument("--lr")
+res = args.parse_args()
 
 class Config:
     training_dir = "./images/train_q/"
     train_batch_size = 32
-    train_number_epochs = 50_000
+    train_number_epochs = res.epoch or 500
 
 
 folder_dataset = dset.ImageFolder(root=Config.training_dir)
@@ -50,7 +55,7 @@ train_dataloader = DataLoader(
 
 net = SiameseNetwork().to(device)
 criterion = ContrastiveLoss().to(device)
-optimizer = optim.Adam(net.parameters(), lr=0.0003)
+optimizer = optim.Adam(net.parameters(), lr=res.lr or 0.0003)
 
 counter = []
 loss_history = []
