@@ -25,7 +25,7 @@ class Config:
         images_dir = os.path.join(os.getcwd(), "images/dataset/compare_v2")
     else:
         testing_dir = "./images/test/"  # add linux path here before testing
-        images_dir = "./images/dataset/compare_v2/"
+        images_dir = "./images/dataset/compare_images/"
 
 
 print("loading image datasets... ")
@@ -67,7 +67,7 @@ loaded_model = None
 print(f'Test Image: {x0["name"]}')
 
 net = SiameseNetwork().to(device)
-loaded_model = torch.load(model_name, map_location=torch.device("cuda"))
+loaded_model = torch.load(model_name, map_location=torch.device(device))
 net.load_state_dict(loaded_model["state_dict"])
 if net is not None:
     print("model loaded... ")
