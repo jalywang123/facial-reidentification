@@ -16,7 +16,7 @@ git clone https://github.com/amalshaji/facial-reidentification
 |               <image1_class2>
 |               <image2_class2>
 ```
-2. Run `python train.py`
+2. Run `python train.py --epoch <num_of_epochs> --lr <learning_rate>`
 
 Training parameters such as epochs, batch_size, training and testing directory found in `Config` class
 
