@@ -28,6 +28,9 @@ Pretrained model found in models directory. Model size ~ 5MB.
 
 You can start testing with the pretrained weights. 
 
+#### Results - Contrastive loss after 500 epochs
+![loss](loss_figure.png)
+
 #### Requirements
 ```
 1. Pytorch
@@ -35,3 +38,4 @@ You can start testing with the pretrained weights.
 3. OpenCV
 4. Numpy
 ```
+
