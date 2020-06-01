@@ -5,7 +5,7 @@ import os
 import torch.nn.functional as F
 from torch.autograd import Variable
 from siamesenetwork import ImagesDataset
-from siamesenetwork import SiameseNetwork
+from siamesenetwork import SiameseNetwork_V2 as SiameseNetwork
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
 import numpy as np

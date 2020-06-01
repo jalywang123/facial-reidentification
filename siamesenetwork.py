@@ -171,11 +171,11 @@ class SiameseNetwork(nn.Module):
         )
 
         self.fc1 = nn.Sequential(
-            nn.Linear(128, 500),
+            nn.Linear(128, 128),
             nn.ReLU(inplace=True),
-            nn.Linear(500, 500),
+            nn.Linear(128, 256),
             nn.ReLU(inplace=True),
-            nn.Linear(500, 128),
+            nn.Linear(256, 64),
         )  # 10-float32 bit encoding
 
     def forward_once(self, x):
@@ -189,3 +189,49 @@ class SiameseNetwork(nn.Module):
         output2 = self.forward_once(input2)
         return output1, output2
 
+class SiameseNetwork_V2(nn.Module):
+    def __init__(self):
+        super(SiameseNetwork_V2, self).__init__()
+        self.cnn1 = nn.Sequential(
+            nn.ReflectionPad2d(1),
+            nn.Conv2d(1, 8, kernel_size=3),
+            nn.ReLU(inplace=True),
+            nn.BatchNorm2d(8),
+            
+            nn.MaxPool2d(3, padding=1),
+            
+            nn.ReflectionPad2d(1),
+            nn.Conv2d(8, 16, kernel_size=3),
+            nn.ReLU(inplace=True),
+            nn.BatchNorm2d(16),
+            
+            nn.MaxPool2d(3, padding=1),
+
+#             nn.ReflectionPad2d(1),
+#             nn.Conv2d(8, 8, kernel_size=3),
+#             nn.ReLU(inplace=True),
+#             nn.BatchNorm2d(8),
+            
+#             nn.MaxPool2d(3, padding=1),
+
+        )
+
+        self.fc1 = nn.Sequential(
+            nn.Linear(2304, 500),
+            nn.ReLU(inplace=True),
+
+#             nn.Linear(500, 500),
+#             nn.ReLU(inplace=True),
+
+            nn.Linear(500, 128)) # 10-float32 bit encoding
+
+    def forward_once(self, x):
+        output = self.cnn1(x)
+        output = output.view(output.size()[0], -1)
+        output = self.fc1(output)
+        return output
+
+    def forward(self, input1, input2):
+        output1 = self.forward_once(input1)
+        output2 = self.forward_once(input2)
+        return output1, output2

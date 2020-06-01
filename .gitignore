@@ -3,4 +3,10 @@ images/
 __pycache__
 slack.py
 models/
-lfw_tunneled/
+lfw_funneled
+cheat.py
+slack_callback.py
+*.swp
+compare_v2/
+nohup.out
+

@@ -16,6 +16,7 @@ import torchvision.datasets.fakedata
 import torchvision.transforms as transforms
 from loss import ContrastiveLoss
 from siamesenetwork import SiameseNetwork
+from siamesenetwork import SiameseNetwork_V2
 from siamesenetwork import SiameseNetworkDataset
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -29,8 +30,8 @@ res = args.parse_args()
 
 class Config:
     training_dir = "./lfw_funneled"
-    train_batch_size = 32
-    train_number_epochs = res.epoch or 500
+    train_batch_size = 64
+    train_number_epochs = int(res.epoch) or 500
 
 
 folder_dataset = dset.ImageFolder(root=Config.training_dir)
@@ -56,7 +57,7 @@ train_dataloader = DataLoader(
 
 net = SiameseNetwork().to(device)
 criterion = ContrastiveLoss().to(device)
-optimizer = optim.Adam(net.parameters(), lr=res.lr or 0.0003)
+optimizer = optim.Adam(net.parameters(), lr=float(res.lr) or 0.0003)
 
 counter = []
 loss_history = []
@@ -83,16 +84,16 @@ for epoch in range(1, Config.train_number_epochs + 1):
         #        epoch, loss_contrastive.item(), str(time.time() - start)[:5]
         #    )
         # )
-        # message = "epoch: {} current loss: {} time taken: {}s".format(
-        #    epoch, loss_contrastive.item(), str(time.time() - start)[:5]
-        # )
-        # try:
-        #    slack_callback.write(message)
-        # except Exception as e:
-        #    pass
+    message = "epoch: {} current loss: {:.4f} time taken: {}s".format(
+        epoch, loss_contrastive.item(), str(time.time() - start)[:5]
+    )
+    try:
+        slack_callback.write(message)
+    except Exception as e:
+        pass
 
     print(
-        "epoch: {} current loss: {} time taken: {}s".format(
+        "epoch: {} current loss: {:.4f} time taken: {}s".format(
             epoch, loss_contrastive.item(), str(time.time() - start)[:5]
         )
     )
