@@ -26,8 +26,9 @@ args.add_argument("--epoch")
 args.add_argument("--lr")
 res = args.parse_args()
 
+
 class Config:
-    training_dir = "./images/train_q/"
+    training_dir = "./lfw_funneled"
     train_batch_size = 32
     train_number_epochs = res.epoch or 500
 
@@ -76,23 +77,28 @@ for epoch in range(1, Config.train_number_epochs + 1):
         loss_contrastive = criterion(output1, output2, label)
         loss_contrastive.backward()
         optimizer.step()
-        if i % 10 == 0:
-            print(
-                "epoch: {} current loss: {} time taken: {}s".format(
-                    epoch, loss_contrastive.item(), str(time.time() - start)[:5]
-                )
-            )
-            message = "epoch: {} current loss: {} time taken: {}s".format(
-                epoch, loss_contrastive.item(), str(time.time() - start)[:5]
-            )
-            try:
-                slack_callback.write(message)
-            except Exception as e:
-                pass
+        # if i % 10 == 0:
+        # print(
+        #    "epoch: {} current loss: {} time taken: {}s".format(
+        #        epoch, loss_contrastive.item(), str(time.time() - start)[:5]
+        #    )
+        # )
+        # message = "epoch: {} current loss: {} time taken: {}s".format(
+        #    epoch, loss_contrastive.item(), str(time.time() - start)[:5]
+        # )
+        # try:
+        #    slack_callback.write(message)
+        # except Exception as e:
+        #    pass
 
-            iteration_number += 10
-            counter.append(iteration_number)
-            loss_history.append(loss_contrastive.item())
+    print(
+        "epoch: {} current loss: {} time taken: {}s".format(
+            epoch, loss_contrastive.item(), str(time.time() - start)[:5]
+        )
+    )
+    # iteration_number += 10
+    counter.append(epoch)
+    loss_history.append(loss_contrastive.item())
 
     if epoch % 50 == 0 and epoch > 0:
         state_dict = {

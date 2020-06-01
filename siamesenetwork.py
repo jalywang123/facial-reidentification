@@ -38,10 +38,12 @@ class SiameseNetworkDataset(Dataset):
                     break
 
         img0 = img0_tuple[0]
-        img0 = get_face_locations(img0)
+        #img0 = get_face_locations(img0)
+        img0 = Image.open(img0)
 
         img1 = img1_tuple[0]
-        img1 = get_face_locations(img1)
+        #img1 = get_face_locations(img1)
+        img1 = Image.open(img1)
 
         img0 = img0.convert("L")
         img1 = img1.convert("L")
@@ -129,7 +131,8 @@ class ImagesDataset(Dataset):
             idx = idx.tolist()
 
         img_name = f"{os.listdir(self.rootdir)[idx]}"
-        img = get_face_locations(f"{self.rootdir}/{img_name}")
+        #img = get_face_locations(f"{self.rootdir}/{img_name}")
+        img = Image.open(f"{self.rootdir}/{img_name}")
         img = img.convert("L")
         # img = np.asarray(image)
         # img = img/255.0
@@ -185,3 +188,4 @@ class SiameseNetwork(nn.Module):
         output1 = self.forward_once(input1)
         output2 = self.forward_once(input2)
         return output1, output2
+

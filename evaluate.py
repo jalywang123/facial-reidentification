@@ -25,7 +25,7 @@ class Config:
         images_dir = os.path.join(os.getcwd(), "images/dataset/compare_v2")
     else:
         testing_dir = "./images/test/"  # add linux path here before testing
-        images_dir = "./images/dataset/compare_images/"
+        images_dir = "./compare_v2/"
 
 
 print("loading image datasets... ")
@@ -87,8 +87,9 @@ for i in range(len(compare_dataset)):
     )
     euclidean_distance = F.pairwise_distance(output1, output2)
     ed = euclidean_distance.cpu().detach().numpy()
+    print(f"filename : {x1['name']} ed: {euclidean_distance}")
     dist.append(ed)
-
+#print(dist, end='\n')
 compare_images = list(os.listdir(Config.images_dir))
 match = np.argmin(dist)
 print(f'Prediction: {compare_images[match]}')
