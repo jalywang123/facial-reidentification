@@ -2,7 +2,6 @@ data/
 images/
 __pycache__
 slack.py
-models/
 lfw_funneled
 cheat.py
 slack_callback.py
